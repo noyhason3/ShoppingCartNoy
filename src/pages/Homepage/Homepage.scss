@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Courgette';
+    src: url('../../assets/fonts/Courgette-Regular.ttf');
+}
+
+.homepage {
+  .main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    .homepage-title{
+        font-family: Courgette;
+        font-size: 2rem;
+        font-weight: 700;
+        width: 15rem;
+        line-height: 4rem;
+        color: rgb(253, 180, 68);
+    }
+  }
+}

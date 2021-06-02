@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Quicksand';
+    src: url('../../assets/fonts/Quicksand-Regular.ttf');
+}
+
+
+.products {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: auto;
+    font-family: 'Quicksand';
+}
