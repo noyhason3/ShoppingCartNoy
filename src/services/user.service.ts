@@ -5,6 +5,12 @@ import _ from 'lodash'
 
 const USER_KEY = 'loggedinUser';
 
+const gDefaultUser: User = {
+  _id: 'u101',
+  name: 'default guest',
+  products: [],
+};
+
 const getLoggedinUser = () => gUser;
 
 const createCart = async () => (await axios.post<Cart>('https://fakestoreapi.com/carts', { userId: gUser._id, date: Date.now(), products: _getProductsQuantities(), })).data;
@@ -49,12 +55,6 @@ export type Cart = {
   date: string,
   products: Product[]
 }
-
-const gDefaultUser: User = {
-  _id: 'u101',
-  name: 'default guest',
-  products: [],
-};
 
 export const userService = {
   getLoggedinUser,
