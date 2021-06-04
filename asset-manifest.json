@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/shopping-cart-noy/static/css/main.76528174.chunk.css",
+    "main.js": "/shopping-cart-noy/static/js/main.c67163f9.chunk.js",
+    "main.js.map": "/shopping-cart-noy/static/js/main.c67163f9.chunk.js.map",
+    "runtime-main.js": "/shopping-cart-noy/static/js/runtime-main.a220a8f4.js",
+    "runtime-main.js.map": "/shopping-cart-noy/static/js/runtime-main.a220a8f4.js.map",
+    "static/js/2.ef4533b0.chunk.js": "/shopping-cart-noy/static/js/2.ef4533b0.chunk.js",
+    "static/js/2.ef4533b0.chunk.js.map": "/shopping-cart-noy/static/js/2.ef4533b0.chunk.js.map",
+    "static/js/3.c8f06080.chunk.js": "/shopping-cart-noy/static/js/3.c8f06080.chunk.js",
+    "static/js/3.c8f06080.chunk.js.map": "/shopping-cart-noy/static/js/3.c8f06080.chunk.js.map",
+    "index.html": "/shopping-cart-noy/index.html",
+    "static/css/main.76528174.chunk.css.map": "/shopping-cart-noy/static/css/main.76528174.chunk.css.map",
+    "static/js/2.ef4533b0.chunk.js.LICENSE.txt": "/shopping-cart-noy/static/js/2.ef4533b0.chunk.js.LICENSE.txt",
+    "static/media/AppHeader.scss": "/shopping-cart-noy/static/media/Courgette-Regular.af9c15cb.ttf",
+    "static/media/Products.scss": "/shopping-cart-noy/static/media/Quicksand-Regular.cffc2790.ttf",
+    "static/media/background.e8b723b5.png": "/shopping-cart-noy/static/media/background.e8b723b5.png",
+    "static/media/cart.19c60e8b.png": "/shopping-cart-noy/static/media/cart.19c60e8b.png",
+    "static/media/loader.3b24a6b9.svg": "/shopping-cart-noy/static/media/loader.3b24a6b9.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a220a8f4.js",
+    "static/js/2.ef4533b0.chunk.js",
+    "static/css/main.76528174.chunk.css",
+    "static/js/main.c67163f9.chunk.js"
+  ]
+}
