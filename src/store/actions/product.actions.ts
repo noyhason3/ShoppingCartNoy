@@ -13,10 +13,8 @@ export type productsDispatch = Dispatch<{
 export const loadProducts = (filterBy: string = '') => {
   return async (dispatch: productsDispatch) => {
     const products = filterBy
-      ?
-      await productService.queryByCategory(filterBy)
-      :
-      await productService.query();
+      ? await productService.queryByCategory(filterBy)
+      : await productService.query();
     dispatch({ type: 'SET_PRODUCTS', products });
   };
 }

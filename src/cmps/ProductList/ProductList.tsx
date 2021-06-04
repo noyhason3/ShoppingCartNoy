@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import { ProductDetails } from '../../pages/ProductDetails';
 import './ProductList.scss'
 
-export const ProductList = ({ products = [], addToCart, match }: { products: Product[], addToCart?: (product: Product, ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void, match?: any }) => {
+export const ProductList = ({ products = [], addToCart, }: { products: Product[], addToCart?: (product: Product, ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
@@ -52,7 +52,7 @@ export const ProductList = ({ products = [], addToCart, match }: { products: Pro
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '1.1rem'
-        
+
       },
       titleCell: {
         display: 'flex',
@@ -96,6 +96,13 @@ export const ProductList = ({ products = [], addToCart, match }: { products: Pro
     }),
   );
 
+  interface Data {
+    id: string;
+    title: string;
+    price: number;
+    image: string;
+  }
+
   interface HeadCell {
     disablePadding: boolean;
     id: keyof Data;
@@ -104,13 +111,6 @@ export const ProductList = ({ products = [], addToCart, match }: { products: Pro
   }
 
   type Order = 'asc' | 'desc';
-
-  interface Data {
-    id: string;
-    title: string;
-    price: number;
-    image: string;
-  }
 
   interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;

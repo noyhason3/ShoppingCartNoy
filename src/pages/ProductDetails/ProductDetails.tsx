@@ -4,7 +4,7 @@ import { ModalCmp } from '../../cmps/Modal';
 import { Product, productService } from '../../services/product.service';
 import './ProductDetails.scss'
 
-export const ProductDetails = (props: any) => {
+export const ProductDetails = ({ match }: any) => {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(true);
   const [currProduct, setCurrProduct] = useState<Partial<Product>>({})
@@ -12,7 +12,7 @@ export const ProductDetails = (props: any) => {
 
   useEffect(() => {
     setLoading(true)
-    getCurrProduct(props.match.params.id)
+    getCurrProduct(match.params.id)
   }, [])
 
   const getCurrProduct = async (productId: string) => {
