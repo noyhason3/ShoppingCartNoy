@@ -51,12 +51,15 @@ export const ProductList = ({ products = [], addToCart, match }: { products: Pro
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        fontSize: '1.1rem'
+        
       },
       titleCell: {
         display: 'flex',
         alignItems: 'center',
         width: '34%',
-        paddingLeft: '40px'
+        paddingLeft: '40px',
+        fontSize: '1.1rem'
       },
       addCell: {
         display: 'flex',

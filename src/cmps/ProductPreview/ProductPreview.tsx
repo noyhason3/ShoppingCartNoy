@@ -30,12 +30,14 @@ export const ProductPreview = ({ product, addToCart, }: { product: Product, addT
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        fontSize: '1rem'
       },
       titleCell: {
         display: 'flex',
         alignItems: 'center',
         width: '34%',
-        paddingLeft: '40px'
+        paddingLeft: '40px',
+        fontSize: '1rem'
       },
       productImg: {
         width: '80px',
