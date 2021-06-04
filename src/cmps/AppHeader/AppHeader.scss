@@ -1,29 +1,27 @@
 @font-face {
-    font-family: 'Courgette';
-    src: url('../../assets/fonts/Courgette-Regular.ttf');
+  font-family: 'Courgette';
+  src: url('../../assets/fonts/Courgette-Regular.ttf');
 }
 
-
 .appHeader {
-    font-family: Courgette;
-    display: flex;
-    flex-direction: row;
-    width: 100vw;
-    justify-content: space-between;
-    align-items: center;
-    margin: auto;
-    height: 10rem;
-    
-    .nav-bar{
-        display: flex;
-        justify-content: space-between;
-        // align-items: center;
-        width: 200px;
-    }
+  font-family: Courgette;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+  height: 10rem;
 
-    .link{
-        text-decoration: none;
-        font-size: large;
-        color: rgb(85, 118, 159);
-    }
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+  }
+
+  .link {
+    text-decoration: none;
+    font-size: large;
+    color: rgb(85, 118, 159);
+  }
 }

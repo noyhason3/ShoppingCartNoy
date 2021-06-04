@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { loadUser } from '../../store/actions/user.action';
@@ -16,7 +16,6 @@ export const AppHeader = () => {
   return (
     <section className='basic-container appHeader'>
       <div className="nav-bar">
-
         <Link className="link" to='/'>
           Home
       </Link>
@@ -24,9 +23,7 @@ export const AppHeader = () => {
           Products
       </Link>
       </div>
-
       <div className="shopping-cart">
-
         <Link to='/cart'>
           <img
             className='person-img'
@@ -35,7 +32,6 @@ export const AppHeader = () => {
             width="70"
           />
         </Link>
-
         <p>{user?.products?.length || 0} Items</p>
       </div>
     </section>

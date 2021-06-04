@@ -1,133 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
+import { TableCell, TableRow } from '@material-ui/core';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import { Backdrop, Fade, Modal } from '@material-ui/core';
-import { productService } from '../../services/product.service';
+import { Product } from '../../services/product.service'
+import { ProductPreview } from '../ProductPreview';
+import { Route, useRouteMatch } from 'react-router';
+import { Link } from 'react-router-dom';
+import { ProductDetails } from '../../pages/ProductDetails';
+import './ProductList.scss'
 
-export const ProductList = ({ products = [], addToCart = null }: any) => {
-  const rows = products;
-
-  interface Data {
-    id: string;
-    title: string;
-    price: number;
-    image: string;
-  }
-
-  function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-
-  type Order = 'asc' | 'desc';
-
-  function getComparator<Key extends keyof any>(
-    order: Order,
-    orderBy: Key,
-  ): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
-    return order === 'desc'
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-
-  function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
-
-  interface HeadCell {
-    disablePadding: boolean;
-    id: keyof Data;
-    label: string;
-    numeric: boolean;
-  }
-
-  const headCells: HeadCell[] = [
-    { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
-    { id: 'price', numeric: true, disablePadding: false, label: 'Price' },
-    { id: 'image', numeric: false, disablePadding: false, label: 'Image' },
-  ];
-
-  interface EnhancedTableProps {
-    classes: ReturnType<typeof useStyles>;
-    numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    order: Order;
-    orderBy: string;
-    rowCount: number;
-  }
-
-  function EnhancedTableHead(props: EnhancedTableProps) {
-    const { classes, order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-
-    return (
-      <section>
-        <TableHead className={classes.table}>
-          <TableRow className={classes.row}>
-            {headCells.map((headCell) => (
-              <TableCell
-                className={headCell.id === 'title' ? classes.titleCell : classes.cell}
-                key={headCell.id}
-                align='left'
-                sortDirection={orderBy === headCell.id ? order : false}
-              >
-                <TableSortLabel
-                  active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : 'asc'}
-                  onClick={createSortHandler(headCell.id)}
-                >
-                  {headCell.label}
-                  {orderBy === headCell.id ? (
-                    <span className={classes.visuallyHidden}>
-                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                    </span>
-                  ) : null}
-                </TableSortLabel>
-              </TableCell>
-            ))}
-            <TableCell className={classes.addCell}></TableCell>
-
-          </TableRow>
-        </TableHead>
-      </section>
-    );
-
-  }
-
-  interface EnhancedTableToolbarProps {
-    numSelected: number;
-  }
-
+export const ProductList = ({ products = [], addToCart, match }: { products: Product[], addToCart?: (product: Product, ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void, match?: any }) => {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
         width: '100%',
       },
       paper: {
-        width: '100%',
         marginBottom: theme.spacing(2),
       },
       table: {
@@ -147,34 +41,27 @@ export const ProductList = ({ products = [], addToCart = null }: any) => {
         top: 20,
         width: 1,
       },
-      button: {
-        background: 'linear-gradient(45deg, rgb(85, 118, 159) 30%, rgb(85, 118, 159) 90%)',
-        border: 0,
-        borderRadius: 3,
-        boxShadow: '0 3px 5px 2px #C9DBFF',
-        color: 'white',
-        height: 48,
-        padding: '0 30px',
-        width: '200px',
-      },
-      row: {
-        height: '100px',
-      },
-      tableBodyRow: {
-        height: '100px',
+      tableRow: {
+        display: 'flex',
+        justifyContent: 'center',
         cursor: 'pointer'
       },
       cell: {
-        width: '8vw',
+        width: '33%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       },
       titleCell: {
-        width: '30vw'
-      },
-      productImg: {
-        width: '80px',
+        display: 'flex',
+        alignItems: 'center',
+        width: '34%',
+        paddingLeft: '40px'
       },
       addCell: {
-        width: '25%',
+        display: 'flex',
+        alignItems: 'center',
+        width: '33%',
       },
       modal: {
         boxSizing: 'border-box',
@@ -206,74 +93,142 @@ export const ProductList = ({ products = [], addToCart = null }: any) => {
     }),
   );
 
+  interface HeadCell {
+    disablePadding: boolean;
+    id: keyof Data;
+    label: string;
+    numeric: boolean;
+  }
+
+  type Order = 'asc' | 'desc';
+
+  interface Data {
+    id: string;
+    title: string;
+    price: number;
+    image: string;
+  }
+
+  interface EnhancedTableProps {
+    classes: ReturnType<typeof useStyles>;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+    order: Order;
+    orderBy: string;
+    rowCount: number;
+  }
+
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('title');
-  const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [open, setOpen] = useState(false);
-  const [currProduct, setCurrProduct] = useState({})
-
+  const { path, url } = useRouteMatch()
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n: any) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  // const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected: string[] = [];
-
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1),
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
-
-  const handleOpen = async (productId: string) => {
-    const productRes = await productService.getById(productId)
-    setCurrProduct(productRes)
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  const headCells: HeadCell[] = [
+    { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
+    { id: 'price', numeric: true, disablePadding: false, label: 'Price' },
+    { id: 'image', numeric: false, disablePadding: false, label: 'Image' },
+  ];
+  const handleChangePage = (event: unknown, newPage: number) => setPage(newPage);
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  // const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
 
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  function getComparator<Key extends keyof any>(
+    order: Order,
+    orderBy: Key,
+  ): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
+    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  function EnhancedTableHead(props: EnhancedTableProps) {
+    const { classes, order, orderBy, onRequestSort } = props;
+    const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+      onRequestSort(event, property);
+    };
+
+    return (
+      <TableHead className={classes.table}>
+        <TableRow className={classes.tableRow}>
+          {headCells.map((headCell) => (
+            <TableCell
+              className={headCell.id === 'title' ? classes.titleCell : classes.cell}
+              key={headCell.id}
+              align='left'
+              sortDirection={orderBy === headCell.id ? order : false}
+            >
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <span className={classes.visuallyHidden}>
+                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  </span>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          ))}
+          {addToCart && <TableCell className={classes.addCell}></TableCell>}
+        </TableRow>
+      </TableHead>
+    );
+  }
+
+  function EnhancedTableBody(props: EnhancedTableProps) {
+    const { order, orderBy } = props;
+    return (
+      <TableBody>
+        {stableSort(products, getComparator(order, orderBy))
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((product: Product, index) => {
+            return (
+              <div>
+                <Link to={`${url}/${product.id}`} className='link' >
+                  <ProductPreview product={product} addToCart={addToCart} />
+                </Link>
+              </div>
+            );
+          })}
+        <Route component={ProductDetails} path={`${path}/:id`} />
+      </TableBody>
+    );
+  }
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
+
         <TableContainer>
           <Table
             className={classes.table}
@@ -282,78 +237,31 @@ export const ProductList = ({ products = [], addToCart = null }: any) => {
           >
             <EnhancedTableHead
               classes={classes}
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={products.length}
             />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row: any, index) => {
-                  return (
-                    <TableRow
-                      hover
-                      className={classes.tableBodyRow}
-                      onClick={(event) => handleOpen(row.id)}
-                      tabIndex={-1}
-                      key={row.title}
-                    >
-                      <TableCell className={classes.titleCell} align='left'>{row.title}</TableCell>
-                      <TableCell className={classes.cell} align='left'>${row.price}</TableCell>
-                      <TableCell className={classes.cell} align='left'>
-                        <img src={row.image} className={classes.productImg} width="50" height="70" />
-                      </TableCell>
-                      <TableCell className={classes.cell} style={{ visibility: ((addToCart) ? 'visible' : 'hidden') }}>
-                        <Button
-                          className={classes.button}
-                          onClick={(ev) => addToCart(row, ev)}
-                        >
-                          Add To Cart
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
+            <EnhancedTableBody
+              classes={classes}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              rowCount={products.length}
+            />
           </Table>
         </TableContainer>
+
         <TablePagination
           rowsPerPageOptions={[5]}
           component="div"
-          count={rows.length}
+          count={products.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-
-      <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paperModal}>
-            {/* <h2 id='transition-modal-title'>{currProduct?.title}</h2> */}
-            <p className={classes.modalText} id='transition-modal-description'>
-              {/* <p className={classes.modalText}>{currProduct?.description}</p> */}
-              {/* <img src={currProduct.image} className={classes.productImg} /> */}
-              {/* <p className={classes.modalText}>${currProduct?.price}</p> */}
-            </p>
-          </div>
-        </Fade>
-      </Modal>
     </div>
   );
 }

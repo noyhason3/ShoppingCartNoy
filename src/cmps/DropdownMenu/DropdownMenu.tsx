@@ -1,5 +1,5 @@
 import './DropdownMenu.scss';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-export const DropdownMenu = ({ names, setFilterBy }: { names: Array<string>; setFilterBy: any }) => {
+export const DropdownMenu = ({ names, setFilterBy }: { names: Array<string>; setFilterBy: Function }) => {
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -37,20 +37,9 @@ export const DropdownMenu = ({ names, setFilterBy }: { names: Array<string>; set
       },
     },
   };
-
-  function getStyles(name: string, categoryName: string[], theme: Theme) {
-    return {
-      textTransform: 'capitalize',
-      fontWeight:
-        categoryName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  }
-
   const classes = useStyles();
   const theme = useTheme();
-  const [categoryName, setCategoryName] = React.useState([]);
+  const [categoryName, setCategoryName] = React.useState<string>('');
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
@@ -62,16 +51,24 @@ export const DropdownMenu = ({ names, setFilterBy }: { names: Array<string>; set
   };
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const value: any = event.target.value
+    const value: string = event.target.value as string
     const valueForFilter = value === "all" ? "" : value;
     setCategoryName(value);
     setFilterBy(valueForFilter);
     handleClose()
   };
 
+  function getStyles(name: string, categoryName: string, theme: Theme) {
+    return {
+      fontWeight:
+        categoryName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
 
   return (
-    <div>
+    <div >
       <FormControl className={classes.formControl}>
         <InputLabel id='demo-mutiple-name-label'>Category</InputLabel>
         <Select
@@ -91,12 +88,11 @@ export const DropdownMenu = ({ names, setFilterBy }: { names: Array<string>; set
             <MenuItem
               key={name}
               value={name}
-              // style={getStyles(name, categoryName, theme)}
+              style={getStyles(name, categoryName, theme)}
             >
               {name}
             </MenuItem>
           ))}
-
         </Select>
       </FormControl>
     </div>

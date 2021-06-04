@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Courgette';
-    src: url('../../assets/fonts/Courgette-Regular.ttf');
+  font-family: 'Courgette';
+  src: url('../../assets/fonts/Courgette-Regular.ttf');
 }
 
 .homepage {
@@ -9,14 +9,15 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-top: 70px;
 
-    .homepage-title{
-        font-family: Courgette;
-        font-size: 2rem;
-        font-weight: 700;
-        width: 15rem;
-        line-height: 4rem;
-        color: rgb(253, 180, 68);
+    .homepage-title {
+      font-family: Courgette;
+      font-size: 2rem;
+      font-weight: 700;
+      width: 15rem;
+      line-height: 4rem;
+      color: rgb(253, 180, 68);
     }
   }
 }

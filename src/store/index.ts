@@ -3,7 +3,6 @@ import { productReducer } from './reducers/product.reducer';
 import { userReducer } from './reducers/user.reducer';
 import thunk from 'redux-thunk';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   productReducer,
   userReducer

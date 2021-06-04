@@ -1,29 +1,29 @@
-const INITIAL_STATE = {
+import { Cart, User } from "../../services/user.service";
+
+const INITIAL_STATE: {
+  currUser: User | null,
+  userCart: Cart | null,
+} = {
   currUser: null,
   userCart: null,
-};
+}
 
-export function userReducer(state = INITIAL_STATE, action:any) {
+export const userReducer = (state = INITIAL_STATE, action: { type: string, user?: User, cart?: Cart }) => {
   switch (action.type) {
     case 'SET_USER':
       return {
         ...state,
-        currUser: {...action.user},
+        currUser: { ...action.user },
       };
-      // case 'ADD_PRODUCT':
-      //   return {
-      //     ...state,
-      //     cartProducts: [...state.cartProducts, action.product],
-      //   };
     case 'SET_USER_CART':
       return {
         ...state,
-        userCart: {...action.cart},
+        userCart: { ...action.cart },
       };
     case 'UPDATE_USER_CART':
       return {
         ...state,
-        userCart: {...action.cart},
+        userCart: { ...action.cart },
       };
     default:
       return state;
